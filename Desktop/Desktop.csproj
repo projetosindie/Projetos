@@ -52,7 +52,9 @@
     <Compile Include="Entity\Clientes.cs" />
     <Compile Include="Entity\Mensagem.cs" />
     <Compile Include="Entity\Status.cs" />
-    <Compile Include="Form1.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>

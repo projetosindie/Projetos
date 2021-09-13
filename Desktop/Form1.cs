@@ -67,7 +67,7 @@ namespace Desktop
 
                     MessageBox.Show(result.texto);
 
-                    
+
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace Desktop
             if (acao == "delete")
             {
                 Int32 selectRowCount = gridClient.Rows.GetRowCount(DataGridViewElementStates.Selected);
-               
+
 
                 if (selectRowCount > 0)
                 {
@@ -146,24 +146,34 @@ namespace Desktop
 
                         idCliente += gridClient.SelectedRows[i].Cells[0].Value.ToString();
 
-                        
-                       
+
+
                     }
 
-                    using (var Client = new HttpClient())
+                    try
                     {
-                        _url += "Clientes/DELETE/"+idCliente;
-                        using (var response = await Client.DeleteAsync(_url))
+
+                        using (var Client = new HttpClient())
                         {
-                            string str = await response.Content.ReadAsStringAsync();
 
-                            var result = JsonConvert.DeserializeObject<Mensagem>(str);
+                            _url += "Clientes/DELETE/" + idCliente;
+                            using (var response = await Client.DeleteAsync(_url))
+                            {
+                                string str = await response.Content.ReadAsStringAsync();
 
-                            if (result.texto != "")
-                                MessageBox.Show(result.texto);
+                                var result = JsonConvert.DeserializeObject<Mensagem>(str);
 
-                            ListCliente();
+                                if (result.texto != "")
+                                    MessageBox.Show(result.texto);
+
+                                ListCliente();
+                            }
                         }
+
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Não foi possivel conectar ao servidor!");
                     }
                 }
             }
@@ -214,7 +224,7 @@ namespace Desktop
         private void editarClienteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Int32 selectRowCount = gridClient.Rows.GetRowCount(DataGridViewElementStates.Selected);
-            
+
             idCliente = gridClient.SelectedRows[0].Cells[0].Value.ToString();
             txtNome.Text = gridClient.SelectedRows[0].Cells[1].Value.ToString();
             txtSobrenome.Text = gridClient.SelectedRows[0].Cells[2].Value.ToString();
